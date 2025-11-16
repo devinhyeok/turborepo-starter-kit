@@ -90,6 +90,9 @@ pnpm -v
 
 # 의존성 설치 (루트에서)
 pnpm install
+
+# Payload용 환경 파일 생성
+node -e "require('fs').copyFileSync('apps/web/.env.example', 'apps/web/.env'); console.log('Created apps/web/.env');"
 ```
 
 ## 제거하기
