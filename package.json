@@ -1,0 +1,39 @@
+{
+  "name": "how-to-use-turborepo",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,md,json}\"",
+    "check-types": "turbo run check-types",
+    "clean": "turbo run clean && node scripts/clean.js",
+    "delete": "node scripts/delete.js",
+    "reinstall": "pnpm delete && pnpm install",
+    "db:dev": "cd packages/database && pnpm dlx supabase@latest start",
+    "db:stop": "cd packages/database && pnpm dlx supabase@latest stop",
+    "db:reset": "cd packages/database && pnpm dlx supabase@latest db reset",
+    "db:status": "cd packages/database && pnpm dlx supabase@latest status",
+    "db:types": "cd packages/database && pnpm dlx supabase@latest gen types typescript --local > database.types.ts",
+    "db:migration:new": "cd packages/database && pnpm dlx supabase@latest migration new",
+    "db:migration:up": "cd packages/database && pnpm dlx supabase@latest migration up",
+    "db:migration:down": "cd packages/database && pnpm dlx supabase@latest migration down"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "turbo": "^2.6.1",
+    "typescript": "5.9.2"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "0.25.12"
+    },
+    "onlyBuiltDependencies": [
+      "sharp"
+    ]
+  }
+}

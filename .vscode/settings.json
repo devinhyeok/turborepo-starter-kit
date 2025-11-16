@@ -1,0 +1,19 @@
+{
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "[json]": {
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  },
+  "yaml.maxItemsComputed": 50000,
+  "files.associations": {
+    "pnpm-lock.yaml": "yaml"
+  }
+}

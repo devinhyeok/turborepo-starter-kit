@@ -1,0 +1,22 @@
+{
+  "name": "database",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm dlx supabase@latest start",
+    "db:dev": "pnpm dlx supabase@latest start",
+    "db:stop": "pnpm dlx supabase@latest stop",
+    "db:reset": "pnpm dlx supabase@latest db reset",
+    "db:status": "pnpm dlx supabase@latest status",
+    "db:types": "pnpm dlx supabase@latest gen types typescript --local > database.types.ts",
+    "db:migration:new": "pnpm dlx supabase@latest migration new",
+    "db:migration:up": "pnpm dlx supabase@latest migration up",
+    "db:migration:down": "pnpm dlx supabase@latest migration down",
+    "build": "echo 'No build step required'",
+    "test": "echo 'Add test script here'",
+    "lint": "echo 'Add lint script here'"
+  },
+  "devDependencies": {
+    "supabase": "^2.58.5"
+  }
+}

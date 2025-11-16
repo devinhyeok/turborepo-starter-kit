@@ -1,0 +1,210 @@
+import { FileTree } from 'nextra/components'
+
+# 국제화 지원 (i18n)
+
+본 프로젝트는 두 가지 국제화 구현 방식을 제공합니다:
+1. Nextra 내장 폴더 구조 국제화
+2. 커스텀 i18n 구현으로 컴포넌트 및 클라이언트 콘텐츠 처리
+
+## Nextra 내장 국제화 지원
+
+Nextra는 폴더 구조를 통해 다국어 콘텐츠를 지원합니다. 프로젝트 루트 디렉토리에서 다양한 언어 폴더를 생성할 수 있습니다:
+
+<FileTree>
+  <FileTree.Folder name="src" defaultOpen>
+    <FileTree.Folder name="content" defaultOpen>
+      <FileTree.Folder name="en" defaultOpen>
+        <FileTree.File name="_meta.tsx" active />
+        <FileTree.File name="index.mdx" />
+        <FileTree.File name="introduction.mdx" />
+      </FileTree.Folder>
+      <FileTree.Folder name="ko" defaultOpen>
+        <FileTree.File name="_meta.tsx" active />
+        <FileTree.File name="index.mdx" />
+        <FileTree.File name="introduction.mdx" />
+      </FileTree.Folder>
+    </FileTree.Folder>
+  </FileTree.Folder>
+</FileTree>
+
+`_meta.tsx` 파일을 통해 언어 전환기를 설정할 수 있습니다:
+
+```tsx
+import type { MetaRecord } from 'nextra'
+
+export default {
+  index: {
+    type: 'page',
+    display: 'hidden',
+    theme: {
+      timestamp: false,
+      layout: 'full',
+      toc: false,
+    },
+  },
+  introduction: {
+    type: 'page',
+    theme: {
+      navbar: true,
+      toc: false,
+    },
+  },
+} satisfies MetaRecord
+```
+
+## 커스텀 i18n 구현
+
+컴포넌트와 클라이언트 콘텐츠를 위해 타입 안전한 국제화 솔루션을 구현했습니다.
+
+### 디렉토리 구조
+
+<FileTree>
+  <FileTree.Folder name="src" defaultOpen>
+    <FileTree.Folder name="i18n" defaultOpen>
+      <FileTree.File name="index.ts" comment="핵심 기능 및 타입 정의" />
+      <FileTree.File name="en.ts" comment="영어 json 언어 팩" />
+      <FileTree.File name="ko.ts" comment="한국어 json 언어 팩" />
+    </FileTree.Folder>
+    <FileTree.Folder name="hooks" defaultOpen>
+      <FileTree.File name="useLocale.ts" comment="캡슐화된 범용 Hooks" />
+    </FileTree.Folder>
+  </FileTree.Folder>
+</FileTree>
+
+### 언어 파일 예제
+
+언어 파일 구조는 다음과 같습니다 ([`ko.ts`](https://github.com/pdsuwwz/nextjs-nextra-starter/blob/main/src/i18n/ko.ts) 예제):
+
+```typescript
+export default {
+  systemTitle: '🚀 Nextra 시작 템플릿',
+  banner: {
+    title: '👋 안녕하세요, Next.js 시작 템플릿에 오신 것을 환영합니다!',
+    more: '자세히 알아보기',
+  },
+
+  badgeTitle: '가볍고 즉시 사용 가능 🎉',
+  featureSupport: `🔥 이제 {{feature}}를 지원합니다!`,
+  lastUpdated: '마지막 업데이트:',
+
+  getStarted: '시작하기',
+  // ...
+}
+```
+
+### 사용 방법
+
+#### 1. 컴포넌트에서 사용
+
+```tsx
+import { useLocale } from '@/hooks'
+
+function MyComponent() {
+  const { t, currentLocale } = useLocale()
+  
+  return (
+    <div>
+      <h1>{t('home.systemTitle')}</h1>
+      
+      {/* 변수 보간 사용 */}
+      <div dangerouslySetInnerHTML={{
+        __html: t('home.featureSupport', {
+          feature: '<span>Tailwind CSS v4, Nextra v4</span>',
+        }),
+      }} />
+    </div>
+  )
+}
+```
+
+#### 2. 언어 동적 전환
+
+URL 경로를 통해 언어를 전환합니다 (예: [`/en/introduction`](/en/introduction) 및 [`/ko/introduction`](/ko/introduction)). 현재 언어는 URL 파라미터에서 자동으로 가져옵니다.
+
+## 타입 안전성
+
+i18n 구현은 완전한 타입 안전 지원을 제공합니다:
+
+1. **자동 완성:** 편집기에서 사용 가능한 모든 번역 키를 자동으로 제안합니다
+2. **타입 체크:** 잘못된 키 사용 시 TypeScript 오류가 발생합니다
+3. **중첩 키 지원:** `home.title`과 같은 점 표기법 접근을 지원합니다
+4. **변수 보간:** 번역에 `{{variable}}` 구문을 사용할 수 있습니다
+
+## 고급 기능
+
+### 중첩 값 가져오기
+
+`getNestedValue` 함수는 점 표기법 경로에 따라 객체의 중첩 값을 가져옵니다:
+
+```typescript
+const value = getNestedValue(i18nConfig[currentLocale], 'home.title')
+```
+
+### 문자열 보간
+
+`interpolateString` 함수는 번역 문자열에 변수 삽입을 지원합니다:
+
+```typescript
+const result = interpolateString(
+  '{{feature}} 지원', 
+  { feature: 'Tailwind CSS v4' }
+) // "Tailwind CSS v4 지원"
+```
+
+### 커스텀 Hooks
+
+`useLocale` Hooks는 언어 감지 및 번역 기능을 캡슐화하여 제공합니다:
+
+- `currentLocale`: 현재 언어 코드
+- `t`: 번역 함수로 변수 보간 지원
+
+## 모범 사례
+
+1. **번역 파일 구성:** 관련 번역을 그룹화하기 위해 중첩 객체 사용
+2. **하드코딩 문자열 방지:** 하드코딩된 텍스트 대신 항상 `t()` 함수 사용
+3. **기본 언어 설정:** 기본 언어 폴백 메커니즘 확보
+4. **키 일관성 유지:** 모든 언어 파일에 동일한 키 포함
+5. **TypeScript 사용:** 타입 시스템을 활용하여 번역의 완전성 및 정확성 보장
+
+## 실전 예제
+
+다음은 `SetupHero` 컴포넌트에서 i18n을 사용하는 예제입니다:
+
+```tsx
+'use client'
+
+import { useLocale } from '@/hooks'
+
+export function SetupHero() {
+  const { t, currentLocale } = useLocale()
+
+  return (
+    <div>
+      <a href="https://github.com/pdsuwwz/nextjs-nextra-starter">
+        {t('badgeTitle')}
+      </a>
+      
+      <Link href={`/${currentLocale}/upgrade`}>
+        <span dangerouslySetInnerHTML={{
+          __html: t('featureSupport', {
+            feature: `<span>Tailwind CSS v4, Nextra v4</span>`,
+          }),
+        }} />
+      </Link>
+      
+      <Button asChild>
+        <Link href={`/${currentLocale}/introduction`}>
+          {t('getStarted')}
+        </Link>
+      </Button>
+    </div>
+  )
+}
+```
+
+## 추가 확장
+
+- **언어 감지:** 브라우저 또는 사용자 선호도 기반 자동 언어 감지 추가
+- **숫자 및 날짜 형식화:** `Intl` API를 통합하여 현지화 형식화
+- **복수형 지원:** 다양한 언어의 복수형 규칙 지원 추가
+- **번역 관리 인터페이스:** 콘텐츠 편집자를 위한 번역 관리 도구 생성

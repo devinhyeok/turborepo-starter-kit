@@ -1,0 +1,100 @@
+---
+description: ObsidianRAG 워크플로우 전용 가이드
+globs:
+alwaysApply: true
+---
+
+## ObsidianRAG 워크플로우
+
+옵시디언 노트를 활용한 완전한 RAG(Retrieval-Augmented Generation) 시스템 구조입니다.
+
+## 워크플로우 기본값
+
+별도 지정이 없으면 항상 이 워크플로우를 대상으로 동작합니다.
+
+- 워크플로우 ID: `LEe0bX20XtDW6Md1`
+- 워크플로우 이름: `obsidian-rag`
+
+## 빠른 결정 규칙
+
+- 키워드 매칭 → 즉시 실행: "가져와봐", "실행해봐", "확인해봐", "조회해봐" → n8n_list_executions 실행
+- 키워드 매칭 → 정보 조회: "구조", "목록", "어떻게", "설정" → n8n_get_workflow 조회
+- 키워드 매칭 → 제안: "개선", "바꾸면", "추가하면", "좋을" → 제안만 제공
+
+## 편집 금지 원칙
+
+- 절대 하지 말 것
+  - 워크플로우 생성
+  - 워크플로우 수정 및 업데이트
+  - 노드 추가, 삭제, 변경
+  - 연결(connection) 변경
+- 허용되는 것
+  - 노드 실행 및 결과 조회
+  - 워크플로우 구조 조회
+  - 실행 기록 조회
+  - 개선 제안 (실제 적용은 하지 않음)
+
+## 웹훅 관련 노드
+
+| 노드 이름                        | Webhook URL                                          | 입력                 | 출력                                                      |
+| -------------------------------- | ---------------------------------------------------- | -------------------- | --------------------------------------------------------- |
+| webhook/read-file                | `https://n8n.dogeinhyeok.com/webhook/read-file`      | `{path: "경로"}`     | Text / 파일 내용 그대로                                   |
+| obsidian                         | `https://n8n.dogeinhyeok.com/webhook/obsidian`       | `{}`                 | JSON / {status, versions, authenticated, certificateInfo} |
+| obsidian/vault                   | `https://n8n.dogeinhyeok.com/webhook/obsidian/vault` | `{}`                 | JSON / {files: ["00_생각관리/", "10_지식관리/", ...]}     |
+| obsidian/vault/{pathToDirectory} | `https://n8n.dogeinhyeok.com/webhook/obsidian/vault` | `{path: "폴더경로"}` | JSON / {files: ["하위폴더/", "파일.md", ...]}             |
+
+### HTTP Method 통일
+
+모든 웹훅은 POST 방식으로 통일합니다.
+
+- POST는 Body에 JSON 형태로 변수를 전달할 수 있습니다.
+- 내부 REST API가 GET이든 POST든 상관없이 래핑할 수 있습니다.
+- 복잡한 파라미터 전달이 용이합니다.
+- GET의 Query String보다 간결하고 명확합니다.
+
+### 웹훅 인증 정보
+
+Header Auth 방식으로 인증합니다.
+
+- Header Name: `n8n-webhook-key`
+- Header Var: `yuTOkX5wU2zhKb3iHJCj8GDFltqSEnZB9Mg1AP4IW0YmQdsvfrNa76RxLeopcV`
+
+### 경로 매핑
+
+읽기 가능 범위: `/data/shared/` 폴더 하위만 접근 가능합니다.
+
+| Windows 경로                            | n8n 경로        |
+| --------------------------------------- | --------------- |
+| `C:\project\n8n\docker\volumes\shared\` | `/data/shared/` |
+
+- `C:\project\n8n\docker\volumes\shared\test.txt` → `/data/shared/test.txt`
+- `C:\project\n8n\docker\volumes\shared\input\data.json` → `/data/shared/input/data.json`
+
+## 아키텍처
+
+n8n은 Obsidian과 AI의 중간 레이어입니다.
+
+```
+옵시디언 문서
+    ↓
+n8n 워크플로 (자동화 & API 레이어)
+    ├─ OpenAI를 에이전트 인공지능으로 활용
+    ├─ Supabase PostgreSQL을 채팅 메모리로 활용
+    └─ Obsidian을 문서 데이터 베이스로 활용
+         ↓
+    외부 인터넷에서 n8n API를 통해 읽기/쓰기
+         ↓
+    Cursor/IDE (MCP 연결)
+```
+
+이 구조로 다음과 같은 장점을 얻을 수 있습니다:
+
+- 보안 계층: Obsidian REST API 직접 노출을 방지합니다. 허용된 작업만 실행할 수 있도록 통제합니다.
+- 패턴화: 표준화된 읽기/쓰기 모듈로 작업을 통제합니다. AI가 예측 불가능한 작업을 하는 것을 방지합니다.
+- 오케스트레이션: 외부 서비스 연동 및 복잡한 워크플로우를 관리합니다. 웹 크롤링, 데이터 변환, 자동 저장 등의 통합 자동화를 수행합니다.
+- 로깅: 모든 작업 기록 및 추적이 가능합니다. 디버깅과 모니터링이 용이합니다.
+
+## 레퍼런스
+
+- [n8n-MCP](https://github.com/czlonkowski/n8n-mcp)
+- [Local REST API for Obsidian](https://coddingtonbear.github.io/obsidian-local-rest-api/)

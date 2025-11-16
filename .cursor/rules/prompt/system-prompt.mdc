@@ -1,0 +1,42 @@
+---
+alwaysApply: true
+---
+
+## Terminal Command Guidelines
+
+### Encoding Issue Workaround
+
+Due to Korean character encoding issues in Cursor's integrated terminal, follow these rules:
+
+- **All terminal commands and outputs must use English only**
+- Never use Korean characters in:
+  - `Write-Output` messages
+  - `echo` commands
+  - Variable names
+  - File descriptions
+  - Comments in PowerShell scripts
+
+### Correct Examples
+
+```powershell
+# ✅ Good - English only
+Write-Output "config: 6 files, 0 MB"
+Write-Output "Total: 244 files"
+foreach ($folder in @("config", "env")) {
+    Write-Output "$folder : OK"
+}
+```
+
+### Incorrect Examples
+
+```powershell
+# ❌ Bad - Korean characters will break
+Write-Output "config: 6개 파일, 0 MB"
+Write-Output "총: 244개 파일"
+```
+
+### Response Format
+
+- You can explain results in Korean to the user in your response text
+- Only terminal command outputs must be in English
+- File counts, sizes, and statuses should use English abbreviations

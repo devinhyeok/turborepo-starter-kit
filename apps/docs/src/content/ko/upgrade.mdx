@@ -1,0 +1,68 @@
+---
+title: "새로운 변화"
+---
+
+import { Callout } from 'nextra/components'
+
+# 🔥 주요 프레임워크 업그레이드
+
+이번에 핵심 프레임워크의 주요 업그레이드를 완료하여 더 나은 개발 경험을 제공합니다!
+
+<Callout emoji={<span className='icon-[ri--alarm-warning-fill]'></span>} type="info">
+주의
+
+본 버전은 최신 릴리스 버전이며, 테스트를 거쳤지만 아직 발견되지 않은 문제가 있을 수 있습니다. 이상 현상이나 불안정한 상황이 발생하면 즉시 [피드백](https://github.com/pdsuwwz/nextjs-nextra-starter/issues)을 주시면 최대한 빨리 수정하겠습니다.
+</Callout>
+
+### Nextra v4 업데이트 요점
+
+Nextra v4가 출시되어 많은 중요한 개선 사항과 새로운 기능을 제공합니다:
+
+- 🚀 **App Router 지원**: Next.js App Router로 완전히 전환하여 Pages Router를 중단하고 최신 Metadata API를 지원합니다.
+- ⚡ **더 빠른 페이지 로딩**: 최적화된 번들 크기와 성능으로 웹사이트 응답 속도 향상
+- 🔍 **새로운 검색 엔진**: Rust 기반 Pagefind로 더 정확하고 효율적인 검색 경험 제공
+- 🏎️ **Turbopack 지원**: 개발 경험 개선 및 오랜 커뮤니티 요구 사항 해결
+- 🌍 **RSC + i18n**: 향상된 국제화 지원으로 다국어 웹사이트 개발이 더욱 편리
+- 🎨 **테마 스타일 최적화**: UI 디자인 개선 및 시각적 일관성 향상
+- 📱 **더 나은 모바일 적응**: 소형 화면 장치를 위한 디스플레이 효과 및 상호 작용 경험 최적화
+- 📚 **더 강력한 디렉토리 구조**: 새로운 "Page Map"이 md/mdx 및 app/ 디렉토리의 jsx/tsx 페이지 수집 지원
+- 🛠️ **원격 MDX 렌더링**: 임의의 콘텐츠 소스에서 MDX 로드 및 사이드바 네비게이션 올바르게 생성
+- ✨ **향상된 목차 (TOC)**: Markdown 제목을 정확하게 표시하며 JSX, 코드 블록, 수학 공식 등의 콘텐츠 지원
+
+자세한 정보는 [Nextra v4 공식 업그레이드 가이드](https://the-guild.dev/blog/nextra-4)를 참조하세요
+
+### Tailwind CSS v4 업데이트 요점
+
+Tailwind CSS v4가 정식 출시되어 여러 중요한 개선 사항과 새로운 기능을 제공합니다:
+
+- 🚀 **완전히 새로운 고성능 엔진**: 전체 빌드 속도 최대 5배 향상, 증분 빌드 속도 100배 이상 향상하여 마이크로초 단위 달성
+- 💎 **현대 웹을 위한 설계**: cascade layers, `@property`를 사용한 커스텀 속성 및 `color-mix()` 등 최신 CSS 기능 기반 구축
+- 🎯 **간소화된 설치 프로세스**: 더 적은 의존성, 제로 설정으로 CSS 파일에 한 줄만 추가하면 됨
+- 📦 **공식 Vite 플러그인**: 긴밀한 통합으로 성능 최대화 및 설정 최소화
+- 🔍 **자동 콘텐츠 감지**: 모든 템플릿 파일을 자동으로 발견하여 설정 불필요
+- 📂 **내장 import 지원**: 추가 도구 없이 여러 CSS 파일 번들링 가능
+- 🛠️ **CSS 우선 설정**: 재구상된 개발자 경험으로 CSS에서 직접 프레임워크를 커스터마이징 및 확장 가능하며 tailwind.config 파일 불필요
+
+자세한 내용은 [Tailwind CSS v4 업그레이드 가이드](https://tailwindcss.com/docs/upgrade-guide) 및 [공식 블로그](https://tailwindcss.com/blog/tailwindcss-v4)를 참조하세요.
+
+
+### 마이그레이션 안내
+
+원활한 업그레이드를 위해 권장 사항:
+
+1. 먼저 테스트 환경에서 업그레이드 검증
+2. 커스텀 컴포넌트의 호환성 확인
+3. 콘솔에 경고 메시지가 있는지 확인
+4. 공식 마이그레이션 가이드를 따라 단계별로 진행
+
+### 문서 및 지원
+
+- 📘 [Nextra 공식 문서](https://nextra.site)
+- 🎨 [Tailwind CSS 공식 문서](https://tailwindcss.com)
+- 🐞 문제가 발생하셨나요? [Issue](https://github.com/pdsuwwz/nextjs-nextra-starter/issues)를 제출해 주세요
+
+### 향후 계획
+
+프레임워크 성능을 지속적으로 최적화하고 더 많은 유용한 기능을 추가할 계획입니다. 기대해 주세요!
+
+이 프로젝트가 도움이 되거나 제가 한 작업이 마음에 드시면 프로젝트 우측 상단의 [⭐️ Star](https://github.com/pdsuwwz/nextjs-nextra-starter) 버튼을 클릭하여 지원해 주세요! 모든 스타는 저에게 가장 큰 격려가 되며 지속적인 개선과 발전에 도움이 됩니다. 감사합니다! 😊
