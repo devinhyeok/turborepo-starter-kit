@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm dlx supabase@latest start",
     "db:dev": "pnpm dlx supabase@latest start",
     "db:stop": "pnpm dlx supabase@latest stop",
     "db:reset": "pnpm dlx supabase@latest db reset",
