@@ -59,6 +59,9 @@ pnpm db:migration:down        # 롤백 테스트
 - **docs**: http://localhost:7822 (Nextra 문서 사이트)
 - **desktop**: http://localhost:23456 (Electron 앱 - webpack-dev-server)
 - **mobile**: http://localhost:8081 (React Native 번들러)
+- **database**: http://localhost:54323/ (Supabase)
+
+> 참고: 각 포트가 이미 점유되어 있으면 프레임워크가 자동으로 다음 포트로 변경해 실행될 수 있습니다.
 
 ```bash
 # 모든 앱 동시 실행 (추천)
